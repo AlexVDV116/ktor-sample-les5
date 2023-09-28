@@ -2,7 +2,6 @@ package com.example.routes
 
 import com.example.dao.daoInMemoryImpl
 import com.example.dto.CreateItemDto
-import com.example.models.Item
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -10,7 +9,6 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlin.text.get
 
 fun Route.itemRoutes() {
     route("item") {
@@ -36,7 +34,6 @@ fun Route.itemRoutes() {
 
         post {
             val item = call.receive<CreateItemDto>()
-            val item2 = Json.decodeFromString<Item>(call.receiveText())
             val newItem = daoInMemoryImpl.addItem(item.name, item.description, item.location)
             if (newItem != null) {
                 call.respondText(Json.encodeToString(newItem), status = HttpStatusCode.Created)
